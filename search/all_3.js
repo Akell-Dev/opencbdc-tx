@@ -5,7 +5,7 @@ var searchData=
   ['data_5ferror_2',['data_error',['../namespacecbdc_1_1transaction_1_1validation.html#af8901b9a4704070452981bca3ab05fbbace29e8f64e6faa54eea929ee7b698c7f',1,'cbdc::transaction::validation']]],
   ['data_5fslice_3',['data_slice',['../namespacecbdc_1_1raft.html#a535d45392fdd81eb0f801d899069b17d',1,'cbdc::raft']]],
   ['debug_4',['debug',['../namespacecbdc_1_1raft.html#a90ce1bef3a0a2ff31a408bd8178818d8aad42f6697b035b7580e4fef93be20b4d',1,'cbdc::raft::debug()'],['../namespacecbdc_1_1logging.html#a71a306e5ac8234a66ce25bb5aed18254aad42f6697b035b7580e4fef93be20b4d',1,'cbdc::logging::debug()'],['../classcbdc_1_1logging_1_1log.html#a7fe252ea20782de485b3e231a084047c',1,'cbdc::logging::log::debug()']]],
-  ['decode_5faddress_5',['decode_address',['../client-cli_8cpp.html#ac1723efebee1f37b0b8f4ff1787cf34e',1,'client-cli.cpp']]],
+  ['decode_5',['decode',['../namespacecbdc_1_1address.html#a32c013cd0545a42a1d5e997881e53aed',1,'cbdc::address']]],
   ['deserialize_6',['deserialize',['../classcbdc_1_1atomizer_1_1atomizer.html#ac5a90e73fa482ad54131d373f0989ec6',1,'cbdc::atomizer::atomizer']]],
   ['deserialize_5frequest_7',['deserialize_request',['../classcbdc_1_1rpc_1_1server.html#ab2562ea21975c38ae466a694e65a91c9',1,'cbdc::rpc::server']]],
   ['deserialize_5fresponse_8',['deserialize_response',['../classcbdc_1_1rpc_1_1client.html#a79427687f2719fd3839d47cd73fa1480',1,'cbdc::rpc::client']]],

@@ -10,7 +10,7 @@
 <area shape="rect" id="node48" href="$client-cli_8cpp.html#ad783cb0cb4e4184edcd5fb3a71d98377" title=" " alt="" coords="104,1381,260,1406"/>
 <area shape="rect" id="node50" href="$client-cli_8cpp.html#a8f57fc9ecb3681d96ef3f40a2c1102a0" title=" " alt="" coords="125,1181,239,1206"/>
 <area shape="rect" id="node3" href="$namespacecbdc.html#aafd742f41d950c51068a394340e6d9b0" title="Parses a hexadecimal representation of a hash." alt="" coords="741,838,885,863"/>
-<area shape="rect" id="node6" href="$client-cli_8cpp.html#ac1723efebee1f37b0b8f4ff1787cf34e" title=" " alt="" coords="335,1131,452,1157"/>
+<area shape="rect" id="node6" href="$namespacecbdc_1_1address.html#a32c013cd0545a42a1d5e997881e53aed" title=" " alt="" coords="318,1131,469,1157"/>
 <area shape="rect" id="node7" href="$client-cli_8cpp.html#afdc2f698f7384cbc9b825c591371f599" title=" " alt="" coords="342,1181,445,1206"/>
 <area shape="rect" id="node8" href="$classcbdc_1_1client.html#ab78fb6f2b72e00d461c07618fedea288" title="Extracts the transaction data that recipients need from senders to confirm pending transfers." alt="" coords="535,1048,663,1088"/>
 <area shape="rect" id="node10" href="$namespacecbdc.html#aed9c6313b2ae6e3d7f01340ab5a3076b" title="Serialize object into nuraft::buffer using a cbdc::nuraft_serializer." alt="" coords="749,1270,876,1295"/>

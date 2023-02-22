@@ -1,5 +1,8 @@
 var namespacecbdc =
 [
+    [ "address", "namespacecbdc_1_1address.html", [
+      [ "decode", "namespacecbdc_1_1address.html#a32c013cd0545a42a1d5e997881e53aed", null ]
+    ] ],
     [ "archiver", "namespacecbdc_1_1archiver.html", "namespacecbdc_1_1archiver" ],
     [ "atomizer", "namespacecbdc_1_1atomizer.html", "namespacecbdc_1_1atomizer" ],
     [ "config", "namespacecbdc_1_1config.html", "namespacecbdc_1_1config" ],
