@@ -572,6 +572,7 @@ namespace cbdc::threepc::agent {
             m_result = error_code::broker_unreachable;
             do_result();
         }
+        m_active_rollbacks.erase(m_ticket_number.value());
     }
 
     void
@@ -646,10 +647,21 @@ namespace cbdc::threepc::agent {
                          "Agent finishing due to permanent error",
                          m_ticket_number.value());
             do_finish();
+        } else if(++m_active_rollbacks[m_ticket_number.value()]
+                  > retry_limit) {
+            m_log->fatal(this,
+                         "Ticket number",
+                         m_ticket_number.value(),
+                         "has exceeded retry limit.");
         } else {
             // Transient error, try again
             m_log->debug(this,
                          "Agent should restart",
+                         m_ticket_number.value());
+            m_log->trace(this,
+                         "Attempt",
+                         m_active_rollbacks[m_ticket_number.value()],
+                         "restarting ticket",
                          m_ticket_number.value());
             m_result = error_code::retry;
             do_result();

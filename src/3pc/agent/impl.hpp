@@ -13,6 +13,9 @@
 
 namespace cbdc::threepc::agent {
     /// Implementation of an agent.
+
+    // Maximum number of retries before failure.
+    static constexpr size_t retry_limit = 100;
     class impl : public interface {
       public:
         /// States for a ticket managed by this agent.
@@ -123,6 +126,11 @@ namespace cbdc::threepc::agent {
         bool m_wounded{false};
         broker::held_locks_set_type m_requested_locks{};
         bool m_restarted{false};
+
+        // count how many times a given ticket has rolled back
+        std::unordered_map<cbdc::threepc::ticket_machine::ticket_number_type,
+                           size_t>
+            m_active_rollbacks;
 
         void handle_begin(broker::interface::ticketnum_or_errcode_type res);
 
