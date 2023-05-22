@@ -189,6 +189,10 @@ namespace cbdc::threepc::agent::rpc {
             Json::Value params,
             const server_type::result_callback_type& callback) -> bool;
 
+        auto handle_admin_peers(
+            Json::Value params,
+            const server_type::result_callback_type& callback) -> bool;
+
         auto
         parse_evm_log_query(const Json::Value& params,
                             const server_type::result_callback_type& callback)
@@ -223,6 +227,11 @@ namespace cbdc::threepc::agent::rpc {
         auto handle_static(const std::string& method,
                            const Json::Value& params,
                            const server_type::result_callback_type& callback)
+            -> std::optional<bool>;
+        
+        auto handle_admin(const std::string& method,
+                          const Json::Value& params,
+                          const server_type::result_callback_type& callback)
             -> std::optional<bool>;
 
         static auto extract_evm_log_query_addresses(

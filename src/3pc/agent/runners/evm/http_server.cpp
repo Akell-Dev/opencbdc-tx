@@ -61,7 +61,25 @@ namespace cbdc::threepc::agent::rpc {
             return maybe_handled.value();
         }
 
+        maybe_handled = handle_admin(method, params, callback);
+        if(maybe_handled.has_value()) {
+            return maybe_handled.value();
+        }
+
         return handle_unsupported(method, params, callback);
+    }
+
+    auto http_server::handle_admin(
+        const std::string& method,
+        const Json::Value& params,
+        const server_type::result_callback_type& callback
+    ) -> std::optional<bool> {
+        if (method == "admin_peers") {
+            // TODO : implement
+            return handle_admin_peers(params, callback);
+        }
+
+        return std::nullopt;
     }
 
     auto http_server::handle_supported(
@@ -263,6 +281,44 @@ namespace cbdc::threepc::agent::rpc {
                             callback,
                             error_code::unknown_method,
                             "Unknown method: " + method);
+    }
+
+    auto http_server::handle_admin_peers(
+        Json::Value /*params*/,
+        const server_type::result_callback_type& callback
+    ) -> bool {
+        auto ret = Json::Value();
+        ret["result"] = Json::Value(Json::arrayValue);
+
+        for (int i = 0 ; i < 2; i++) {
+            auto _shard = Json::Value();
+            // TODO : Hard Coding -> configure
+            _shard["version"] = "0x1";
+            _shard["name"] = "VENETA DLT"; // name prefix
+            // list
+            _shard["caps"] = Json::Value(Json::arrayValue);
+            _shard["caps"].append("RAFT");
+            // object
+            _shard["network"] = Json::Value();
+            _shard["network"]["localAddress"] = "127.0.0.1:8080"; 
+            _shard["network"]["remoteAddress"] = "127.0.0.1:8080";
+
+            _shard["port"] = 8080;
+            // TODO : make id logic adding ( component id?)
+            _shard["id"] = "0xV";
+            _shard["protocols"] = Json::Value();
+            _shard["protocols"]["evm"] = Json::Value(); // runner mode
+            _shard["protocols"]["evm"]["difficulty"] = "0x00";
+            _shard["protocols"]["evm"]["head"] = "0x00";
+            _shard["protocols"]["evm"]["version"] = 0;
+            // TODO : make enode logic adding
+            _shard["enode"] = "enode://";
+
+            ret["result"].append(_shard);
+        }
+        callback(ret);
+        
+        return true;
     }
 
     auto http_server::handle_decode_raw_transaction(
