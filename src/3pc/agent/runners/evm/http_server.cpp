@@ -290,29 +290,16 @@ namespace cbdc::threepc::agent::rpc {
         auto ret = Json::Value();
         ret["result"] = Json::Value(Json::arrayValue);
 
-        for (int i = 0 ; i < 2; i++) {
-            auto _shard = Json::Value();
-            // TODO : Hard Coding -> configure
-            _shard["version"] = "0x1";
-            _shard["name"] = "VENETA DLT"; // name prefix
-            // list
-            _shard["caps"] = Json::Value(Json::arrayValue);
-            _shard["caps"].append("RAFT");
-            // object
-            _shard["network"] = Json::Value();
-            _shard["network"]["localAddress"] = "127.0.0.1:8080"; 
-            _shard["network"]["remoteAddress"] = "127.0.0.1:8080";
+        size_t _agent_size = m_cfg.m_agent_endpoints.size();
 
-            _shard["port"] = 8080;
-            // TODO : make id logic adding ( component id?)
-            _shard["id"] = "0xV";
-            _shard["protocols"] = Json::Value();
-            _shard["protocols"]["evm"] = Json::Value(); // runner mode
-            _shard["protocols"]["evm"]["difficulty"] = "0x00";
-            _shard["protocols"]["evm"]["head"] = "0x00";
-            _shard["protocols"]["evm"]["version"] = 0;
-            // TODO : make enode logic adding
-            _shard["enode"] = "enode://";
+        for (size_t i = 0 ; i < _agent_size; i++) {
+            auto _shard = peers_info_to_json(
+                m_cfg.m_agent_endpoints.at(i),
+                m_cfg.m_shard_endpoints.at(i),
+                m_cfg.m_node_id,
+                m_cfg.m_component_id,
+                m_cfg.m_runner_type
+            );
 
             ret["result"].append(_shard);
         }

@@ -475,4 +475,101 @@ namespace cbdc::threepc::agent::runner {
         }
         return res;
     }
+
+    auto supportedSubProtocol() -> std::vector<std::string> {
+        return std::vector<std::string> { "RAFT" };
+    }
+
+    auto agent_network_to_json(const network::endpoint_t endpoint) -> Json::Value {
+        auto res = Json::Value();
+        res["localAddress"] = "Not Supported";
+        res["remoteAddress"] = "http://" + endpoint.first + ":" + std::to_string(endpoint.second);
+        return res;
+    }
+
+    auto shard_network_to_json(const std::vector<network::endpoint_t> endpoints) -> Json::Value {
+        auto res = Json::Value(Json::arrayValue);
+        
+        for(auto endpoint : endpoints) {
+            auto address = Json::Value();
+            // TODO : Encrypt 
+            address["address"] = "veneta://" + endpoint.first;
+            res.append(address);
+        }
+
+        return res;
+    }
+
+    auto protocols_to_json(cbdc::threepc::runner_type type) -> Json::Value {
+        auto res = Json::Value();
+
+        // TODO : 
+        switch(type) {
+            case cbdc::threepc::runner_type::evm :
+                res["evm"] = Json::Value();
+                res["evm"]["difficulty"] = "0x00";
+                res["evm"]["head"] = "0x00";
+                res["evm"]["version"] = "0x00";
+                break;
+
+            case cbdc::threepc::runner_type::lua :
+                res["lua"] = Json::Value();
+                res["lua"]["difficulty"] = "0x00";
+                res["lua"]["head"] = "0x00";
+                res["lua"]["version"] = "0x00";
+                break;
+
+            default : 
+                break;
+        }
+
+        return res;
+    }
+
+    auto peers_info_to_json(const network::endpoint_t agent, 
+                            const std::vector<network::endpoint_t> shard,
+                            const std::optional<size_t> node_id,
+                            const size_t componet_id,
+                            const cbdc::threepc::runner_type runner) 
+    -> Json::Value {
+        auto res = Json::Value();
+
+        // TODO : How Setup Version?
+        res["version"] = "0x01";
+
+        // TODO : define Mame Rule
+        std::string name = "VENETA DLT AGENT " + std::to_string(componet_id);
+        if ( node_id.has_value()) {
+            name += " NODE " + std::to_string(node_id.value());
+        }
+        res["name"] = name;
+
+        // Supported Shards Consensus Algorithm
+        res["caps"] = Json::Value(Json::arrayValue);
+        for (auto v : supportedSubProtocol()) {
+            res["caps"].append(v); 
+        }
+
+        // Make Network Information
+        res["network"] = Json::Value();
+        res["network"]["agent"] = agent_network_to_json(agent);
+        res["network"]["shard"] = shard_network_to_json(shard);
+        
+        res["port"] = agent.second;
+
+        // TODO : Create enode ID
+        res["id"] = "";
+        if (node_id.has_value()) {
+            res["id"] = node_id.value();
+        }
+
+        res["protocols"] = protocols_to_json(runner);
+
+        if ( runner == cbdc::threepc::runner_type::evm) {
+            // TODO : calculate node_id@ip:port
+            res["enode"] = "enode://";
+        }
+
+        return res;
+    }
 }
