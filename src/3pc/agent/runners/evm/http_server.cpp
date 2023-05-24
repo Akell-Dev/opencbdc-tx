@@ -66,6 +66,11 @@ namespace cbdc::threepc::agent::rpc {
             return maybe_handled.value();
         }
 
+        maybe_handled = handle_debug(method, params, callback);
+        if (maybe_handled.has_value()) {
+            return maybe_handled.value();
+        }
+
         return handle_unsupported(method, params, callback);
     }
 
@@ -75,10 +80,21 @@ namespace cbdc::threepc::agent::rpc {
         const server_type::result_callback_type& callback
     ) -> std::optional<bool> {
         if (method == "admin_peers") {
-            // TODO : implement
             return handle_admin_peers(params, callback);
         }
 
+        return std::nullopt;
+    }
+
+    auto http_server::handle_debug(
+        const std::string& method,
+        const Json::Value& params,
+        const server_type::result_callback_type& callback
+    ) -> std::optional<bool> {
+        if (method == "debug_metrics") {
+            return handle_debug_metrics(params, callback);
+        }
+        
         return std::nullopt;
     }
 
@@ -283,6 +299,44 @@ namespace cbdc::threepc::agent::rpc {
                             "Unknown method: " + method);
     }
 
+    auto http_server::handle_debug_metrics(
+        Json::Value /* params */,
+        const server_type::result_callback_type& callback
+    ) -> bool {
+        auto ret = Json::Value();
+        std::string name = "{SHARD-NAME}";
+        ret["result"] = Json::Value(Json::arrayValue);
+
+        for(auto shard_cluster : m_cfg.m_shard_endpoints) {
+            for(auto shard : shard_cluster) {
+                // TODO : MML
+                auto process = Json::Value();
+                auto res = Json::Value();
+
+                res["cpu_core"] = Json::Value();
+                res["cpu_core"] = 4;
+
+                res["cpu_usage_percent"] = Json::Value();
+                res["cpu_usage_percent"] = "0%";
+
+                res["virtual_memory"] = Json::Value();
+                res["virtual_memory"] = "1";
+
+                res["used_memory"] = 1;
+
+                res[name] = Json::Value("1.0");
+
+                process["process"] = res;
+
+                ret["result"].append(process);
+            }
+        }
+
+        callback(ret);
+
+        return true;
+    }
+
     auto http_server::handle_admin_peers(
         Json::Value /*params*/,
         const server_type::result_callback_type& callback
@@ -291,13 +345,15 @@ namespace cbdc::threepc::agent::rpc {
         ret["result"] = Json::Value(Json::arrayValue);
 
         size_t _agent_size = m_cfg.m_agent_endpoints.size();
+        auto component = m_cfg.m_agent_endpoints.at(m_cfg.m_component_id);
 
         for (size_t i = 0 ; i < _agent_size; i++) {
             auto _shard = peers_info_to_json(
+                component,
                 m_cfg.m_agent_endpoints.at(i),
-                m_cfg.m_shard_endpoints.at(i),
+                m_cfg.m_shard_endpoints,
                 m_cfg.m_node_id,
-                m_cfg.m_component_id,
+                i,
                 m_cfg.m_runner_type
             );
 

@@ -168,8 +168,9 @@ namespace cbdc::threepc::agent::runner {
                uint64_t chain_id = opencbdc_chain_id) -> cbdc::hash_t;
 
     
-    auto peers_info_to_json(const network::endpoint_t agent,
-                            const std::vector<network::endpoint_t> shard,
+    auto peers_info_to_json(const network::endpoint_t local,
+                            const network::endpoint_t remote,
+                            const std::vector<std::vector<network::endpoint_t>> shard,
                             const std::optional<size_t> node_id,
                             const size_t componet_id,
                             const cbdc::threepc::runner_type runner

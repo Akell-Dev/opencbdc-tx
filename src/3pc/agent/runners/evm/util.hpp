@@ -38,6 +38,11 @@ namespace cbdc::threepc::agent::runner {
     auto to_hex_trimmed(const evmc::bytes32& b,
                         const std::string& prefix = "0x") -> std::string;
 
+    /// Converts a endpoint object to Query Domain Name
+    /// \param address to convert string.
+    /// \return Query Domain Name
+    auto to_str(const network::endpoint_t address) -> std::string;
+
     /// Adds an entry to a bloom value
     /// \param bloom the existing bloom value
     /// \param entry the entry to add
