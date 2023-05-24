@@ -93,3 +93,6 @@ COPY --from=builder /opt/tx-processor/build/tools/bench/3pc/lua/lua_bench ./buil
 
 # Copy wait script
 COPY --from=builder /opt/tx-processor/scripts/wait-for-it.sh ./scripts/wait-for-it.sh
+
+#Copy 3pc configure
+COPY --from=builder /opt/tx-processor/3pc-compose.cfg ./3pc-compose.cfg
