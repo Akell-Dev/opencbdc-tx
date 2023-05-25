@@ -25,6 +25,8 @@ namespace cbdc::threepc {
         lua,
         /// Ethereum-style transactions using EVM.
         evm,
+        /// Not Supported model
+        not_supported,
     };
 
     /// Configuration parameters for a phase two system.
