@@ -20,12 +20,12 @@ namespace cbdc::threepc {
     using endpoints = std::vector<network::endpoint_t>;
 
     struct options {
-        endpoints m_ticket_machine_endpoints;
+        std::vector<network::endpoint_t> m_ticket_machine_endpoints;
         endpoints m_agent_endpoints;
         cbdc::threepc::runner_type m_runner_type;
 
         size_t m_component_id{0};
-        std::optional<size_t> node_id; 
+        std::optional<size_t> m_node_id; 
         logging::log_level m_loglevel;
     };
 
@@ -34,21 +34,28 @@ namespace cbdc::threepc {
     static constexpr auto shard_count_prefix = "shard_count";
     static constexpr auto shard_prefix = "shard";
     static constexpr auto ticket_machine_prefix = "ticket_machine";
+    static constexpr auto loadgen_prefix = "loadgen";
     static constexpr auto agent_prefix = "agent";
     static constexpr auto runner_prefix = "runner";
     static constexpr auto config_separator = "_";
     static constexpr auto count_postfix = "count";
     static constexpr auto runner_postfix = "type";
+    static constexpr auto txtype_postfix = "txtype";
+    static constexpr auto account_postfix = "account";
 
-    //auto read_agent_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_ticket_machine_options(config& option, const parser& cfg) -> std::optional<std::string>;
+    static constexpr auto component_id_prefix = "component_id";
+    static constexpr auto node_id_prefix = "node_id";
+    static constexpr auto contention_rate_prefix = "contention_rate";
+
+    auto read_agent_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
+    auto read_ticket_machine_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_runner_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     //auto read_shard_cluster_options(config& option, const parser& cfg) -> std::optional<std::string>;
     //auto read_shard_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_log_level_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_loadgen_txtype_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_loadgen_account_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_contention_rate_options(config& option, const parser& cfg) -> std::optional<std::string>;
+    auto read_log_level_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
+    auto read_loadgen_txtype_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
+    auto read_loadgen_account_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
+    auto read_contention_rate_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
 
     auto load_options(const std::string& config_file) -> std::variant<options, std::string>;
     auto read_options(const std::string& config_file) -> std::variant<options, std::string>;
