@@ -14,19 +14,36 @@ namespace cbdc::threepc {
     namespace defaults {
         static constexpr size_t initial_count{0};
         static constexpr size_t initial_component_id{0};
-        static constexpr auto log_level = logging::log_level::trace;
+        static constexpr auto log_level = logging::log_level::warn;
     }
 
     using endpoints = std::vector<network::endpoint_t>;
 
-    struct options {
-        std::vector<network::endpoint_t> m_ticket_machine_endpoints;
-        endpoints m_agent_endpoints;
-        cbdc::threepc::runner_type m_runner_type;
 
+    /// copied configure structure
+    struct options {
+        /// RPC endpoints for the nodes in the ticket machine raft cluster.
+        endpoints m_ticket_machine_endpoints;
+        /// ID of the component the instance should be.
         size_t m_component_id{0};
-        std::optional<size_t> m_node_id; 
+        /// Log level to use, defaults to WARN
         logging::log_level m_loglevel;
+        /// RPC endpoints for the nodes in the shard raft clusters.
+        std::vector<endpoints> m_shard_endpoints;
+        /// ID of the node within the component the instance should be, if
+        /// applicable.
+        std::optional<size_t> m_node_id; 
+        /// RPC endpoints for the agents.
+        endpoints m_agent_endpoints;
+        /// Type of execution environment to use in the agent.
+        cbdc::threepc::runner_type m_runner_type;
+        /// The number of simultaneous load generator threads
+        size_t m_loadgen_accounts;
+        /// Type of transactions load generators should produce
+        cbdc::threepc::load_type m_load_type;
+        /// The percentage of transactions that are using the same account
+        /// to simulate contention
+        double m_contention_rate;
     };
 
     static constexpr auto endpoint_postfix = "endpoint";
@@ -50,8 +67,8 @@ namespace cbdc::threepc {
     auto read_agent_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_ticket_machine_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_runner_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
-    //auto read_shard_cluster_options(config& option, const parser& cfg) -> std::optional<std::string>;
-    //auto read_shard_options(config& option, const parser& cfg) -> std::optional<std::string>;
+    auto read_shard_cluster_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
+    auto read_shard_options(options& option, size_t id, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_log_level_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_loadgen_txtype_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;
     auto read_loadgen_account_options(options& option, const cbdc::config::parser& cfg) -> std::optional<std::string>;

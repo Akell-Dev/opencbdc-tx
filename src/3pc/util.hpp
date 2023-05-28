@@ -16,7 +16,9 @@ namespace cbdc::threepc {
         /// Base token transfer
         transfer,
         /// ERC20 token transfer
-        erc20
+        erc20,
+        /// Not Supported transfer
+        not_supported,
     };
 
     /// Execution/transaction model
