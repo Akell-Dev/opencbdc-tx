@@ -10,6 +10,7 @@
 #include "3pc/broker/interface.hpp"
 #include "3pc/runtime_locking_shard/interface.hpp"
 #include "3pc/util.hpp"
+#include "3pc/config.hpp"
 #include "util/common/logging.hpp"
 #include "util/common/thread_pool.hpp"
 

@@ -8,6 +8,7 @@
 
 #include "3pc/agent/runners/interface.hpp"
 #include "3pc/util.hpp"
+#include "3pc/config.hpp"
 #include "host.hpp"
 
 #include <evmc/evmc.h>
