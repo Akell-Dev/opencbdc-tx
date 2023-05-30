@@ -394,12 +394,19 @@ auto evm_bench::pump() -> std::optional<bool> {
         auto end_time = std::chrono::high_resolution_clock::now();
         auto duration = end_time - *m_start_time;
         auto txpns = m_txs / (duration.count() / 1000000000.0);
+        m_total_tx += m_txs;
+        m_total_duration += duration;
+        auto avg_txpns = m_total_tx / (m_total_duration.count() / 1000000000.0);
+
         m_log->info("TX/s:",
                     txpns,
                     "txs:",
                     m_txs,
                     "duration:",
-                    duration.count());
+                    duration.count(),
+                    "AVG Tx/s:",
+                    avg_txpns
+                    );
         m_txs = 0;
         m_start_time = end_time;
     }

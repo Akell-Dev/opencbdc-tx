@@ -80,6 +80,8 @@ class evm_bench {
     std::atomic_bool m_running{true};
 
     size_t m_total_accounts;
+    std::chrono::nanoseconds m_total_duration;
+    size_t m_total_tx;
 
     std::optional<std::chrono::high_resolution_clock::time_point> m_start_time;
 

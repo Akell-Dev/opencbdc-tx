@@ -9,27 +9,9 @@ services:
     image: opencbdc-tx-threepc
     tty: true
     restart: always
-    command: ./scripts/wait-for-it.sh -s ticket0:7777 -t 60 -- ./scripts/wait-for-it.sh -s shard0:5556 -t 60 -- ./scripts/wait-for-it.sh -s shard2:5558 -- ./build/src/3pc/agent/agentd --shard_count=2 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=0 --component_id=0 --agent_count=2 --agent0_endpoint=agent0:8080 --agent1_endpoint=agent1:8081 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=TRACE --runner_type="evm"
+    command: ./scripts/wait-for-it.sh -s ticket0:7777 -t 60 -- ./scripts/wait-for-it.sh -s shard0:5556 -t 60 -- ./build/src/3pc/agent/agentd --shard_count=1 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5558 --node_id=0 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:8080 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN --runner_type="evm"
     ports:
       - 8080:8080
-    networks:
-      - 3pc-network
-    healthcheck:
-      test: ["CMD-SHELL", "netstat -ltn | grep -c 6666"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  agent1:
-    build:
-      context: .
-      target: threepc
-    image: opencbdc-tx-threepc
-    tty: true
-    restart: always
-    command: ./scripts/wait-for-it.sh -s ticket0:7777 -t 60 -- ./scripts/wait-for-it.sh -s shard0:5556 -t 60 -- ./scripts/wait-for-it.sh -s shard2:5558 -- ./build/src/3pc/agent/agentd --shard_count=2 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=0 --component_id=1 --agent_count=2 --agent0_endpoint=agent0:8080 --agent1_endpoint=agent1:8081 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=TRACE --runner_type="evm"
-    ports:
-      - 8081:8081
     networks:
       - 3pc-network
     healthcheck:
@@ -44,7 +26,7 @@ services:
       target: threepc
     image: opencbdc-tx-threepc
     tty: true
-    command: ./scripts/wait-for-it.sh -s shard0:5556 -t 60 -- ./build/src/3pc/ticket_machine/ticket_machined --shard_count=1 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=0 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN
+    command: ./scripts/wait-for-it.sh -s shard0:5556 -t 60 -- ./build/src/3pc/ticket_machine/ticket_machined --shard_count=1 --shard0_count=3 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5558 --shard02_endpoint=shard2:5560 --node_id=0 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN
     networks:
       - 3pc-network
     healthcheck:
@@ -60,7 +42,7 @@ services:
       target: threepc
     image: opencbdc-tx-threepc
     tty: true
-    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=2 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=0 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=TRACE
+    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=1 --shard0_count=3 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5558 --shard02_endpoint=shard2:5560 --node_id=0 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN
     networks:
       - 3pc-network
     healthcheck:
@@ -76,27 +58,27 @@ services:
       target: threepc
     image: opencbdc-tx-threepc
     tty: true
-    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=1 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=1 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=TRACE
+    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=1 --shard0_count=3 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5558 --shard02_endpoint=shard2:5560 --node_id=1 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN
     networks:
       - 3pc-network
     healthcheck:
-      test: ["CMD-SHELL", "netstat -ltn | grep -c 5557"]
+      test: ["CMD-SHELL", "netstat -ltn | grep -c 5558"]
       interval: 30s
       timeout: 10s
       retries: 5
     restart: always
-
+  
   shard2:
     build:
       context: .
       target: threepc
     image: opencbdc-tx-threepc
     tty: true
-    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=2 --shard0_count=2 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5557 --shard1_count=1 --shard10_endpoint=shard2:5558 --node_id=0 --component_id=1 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=TRACE
+    command: ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd --shard_count=1 --shard0_count=3 --shard00_endpoint=shard0:5556 --shard01_endpoint=shard1:5558 --shard02_endpoint=shard2:5560 --node_id=2 --component_id=0 --agent_count=1 --agent0_endpoint=agent0:6666 --ticket_machine_count=1 --ticket_machine0_endpoint=ticket0:7777 --loglevel=WARN
     networks:
       - 3pc-network
     healthcheck:
-      test: ["CMD-SHELL", "netstat -ltn | grep -c 5558"]
+      test: ["CMD-SHELL", "netstat -ltn | grep -c 5560"]
       interval: 30s
       timeout: 10s
       retries: 5
