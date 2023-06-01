@@ -6,6 +6,10 @@
 #include "util/rpc/tcp_server.hpp"
 #include "util/rpc/tcp_client.hpp"
 #include "message.hpp"
+#include "options.hpp"
+
+#include "server.hpp"
+#include "client.hpp"
 
 #include  <vector>
 

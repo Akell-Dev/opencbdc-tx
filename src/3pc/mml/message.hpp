@@ -2,6 +2,7 @@
 #define __OPENCBDC_MML_MESSAGE_H__
 
 #include "util/common/buffer.hpp"
+#include "interface.hpp"
 
 #include <variant>
 
@@ -16,7 +17,7 @@ namespace cbdc::threepc::mml::rpc {
     using exec_return_type = std::variant<std::string, error_code>;
 
     /// MML contract execution RPC request message.
-    struct exec_request {
+    struct execute_request {
         /// Key of function bytecode :  m_function
         key_type m_function;
         /// Function call parameter : m_param
@@ -26,8 +27,8 @@ namespace cbdc::threepc::mml::rpc {
     };
 
     /// MML RPC request type.
-    using request = exec_request;
+    using request = std::variant<execute_request>;
     /// MML RPC response type.
-    using response = exec_return_type;
+    using response = std::variant<execute_response>;
 }
 #endif
