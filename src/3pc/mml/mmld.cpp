@@ -47,7 +47,6 @@ auto main(int argc, char** argv) -> int {
     } else if (mode == cbdc::threepc::mml::mode::client) {
         [[maybe_unused]] cbdc::network::endpoint_t test = cbdc::network::endpoint_t{"localhost", 9001};
         logger->trace("CLIENT mode");
-        // auto client = std::make_shared<cbdc::threepc::mml::rpc>
     }
 
     logger->info("Monotoring Shutting down...");

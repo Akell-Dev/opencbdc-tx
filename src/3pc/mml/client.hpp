@@ -24,7 +24,7 @@ namespace cbdc::threepc::mml::rpc {
 
             auto init(std::optional<bool> error_fatal = std::nullopt) -> bool;
 
-            using execute_result_type = std::optional<exec_return_type>;
+            using execute_result_type = std::optional<execute_return_type>;
         private :
             cbdc::threepc::mml::options m_opts;
             std::shared_ptr<logging::log> m_logger;
