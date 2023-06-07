@@ -56,6 +56,8 @@ auto main(int argc, char** argv) -> int {
     log->info("Shard running");
 
     while(running) {
+        controller.handle_cpu_usage();
+        controller.handle_mem_usage();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 

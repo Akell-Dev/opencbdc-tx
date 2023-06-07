@@ -115,4 +115,63 @@ namespace cbdc::threepc::runtime_locking_shard {
 
         m_logger->info("Recovered shard and started RPC server");
     }
+
+    void controller::handle_cpu_usage(/* param */) {
+        auto file_name = "/proc/stat";
+        char* maybe_line = NULL;
+        size_t len = 0;
+        struct cpu_resource {
+            char id[6];
+            int maybe_user;
+            int maybe_nice;
+            int maybe_system;
+            int maybe_idle;
+            int total;
+        };
+        
+
+        /// may return 0 when not able to detect
+        const auto processor_count = std::thread::hardware_concurrency();
+        if ( 0 == processor_count) {
+            m_logger->error("Not able to hardware detect");
+            return;
+        }
+
+        m_logger->info("Able to hardware detected");
+
+        auto maybe_cpu_cores = sysconf(_SC_NPROCESSORS_ONLN);
+        m_logger->warn("cpu core : ", maybe_cpu_cores);
+        auto sz_num_cpu_cores = static_cast<size_t>(maybe_cpu_cores) + 1;
+
+        FILE *p_stat = NULL;
+        p_stat = fopen(file_name, "r");
+
+        std::unique_ptr<cpu_resource[]> data = std::make_unique<cpu_resource[]>(sz_num_cpu_cores);
+
+        for(size_t i{0}; i < sz_num_cpu_cores; i++) {
+            [[maybe_unused]]size_t read = getline(&maybe_line, &len, p_stat);
+            int got = sscanf(maybe_line, "%s %d %d %d %d", data[i].id, &data[i].maybe_user, &data[i].maybe_nice, &data[i].maybe_system, &data[i].maybe_idle);
+            if ( 0 == got) continue;
+            m_logger->warn(i+1, data[i].id, "|| user :", data[i].maybe_user, data[i].maybe_nice, data[i].maybe_system, data[i].maybe_idle);
+            data[i].total = data[i].maybe_user + data[i].maybe_nice + data[i].maybe_system + data[i].maybe_idle;
+        }
+
+        fclose(p_stat);
+    }
+
+    void controller::handle_mem_usage(/*param*/) {
+        struct sysinfo mem_info;
+
+        /// may return 0 when not able to detect
+        const auto processor_count = std::thread::hardware_concurrency();
+        if ( 0 == processor_count) {
+            m_logger->error("Not able to hardware detect");
+            return;
+        }
+
+        /// get system info
+        sysinfo(&mem_info);
+
+        m_logger->warn("total : ", mem_info.totalram, "mem_unit : ", mem_info.mem_unit, "free : ", mem_info.freeram);
+    }
 }

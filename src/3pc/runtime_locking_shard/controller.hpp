@@ -13,6 +13,13 @@
 #include "util/raft/node.hpp"
 #include "util/rpc/tcp_server.hpp"
 
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+
+#include <sys/types.h>
+#include <sys/sysinfo.h>
+
 namespace cbdc::threepc::runtime_locking_shard {
     /// Manages a replicated runtime locking shard using Raft.
     class controller {
@@ -41,6 +48,8 @@ namespace cbdc::threepc::runtime_locking_shard {
         /// cluster.
         /// \return true if initialization was successful.
         auto init() -> bool;
+        void handle_cpu_usage(/*res*/);
+        void handle_mem_usage(/*res*/);
 
       private:
         auto raft_callback(nuraft::cb_func::Type type,
