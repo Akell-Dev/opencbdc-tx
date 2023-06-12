@@ -1,3 +1,4 @@
+add_definitions(-DAVERAGE_BENCH)
 add_executable(evm_bench evm_bench.cpp
                          rpc_client.cpp
                          contracts.cpp
