@@ -166,6 +166,23 @@ namespace cbdc::threepc::agent::runner {
     /// \return the eth compatible txid of the transaction
     auto tx_id(const cbdc::threepc::agent::runner::evm_tx& tx,
                uint64_t chain_id = opencbdc_chain_id) -> cbdc::hash_t;
+
+
+    /// Encodes to given agents list a eth-RPC compatible representation
+    /// in JSON - as Json::Value
+    /// \param local The Local Agent Endpoint
+    /// \param remote The Remote Agent Endpoint
+    /// \param shard The Shard List
+    /// \param node_id The Node ID in Current Component
+    /// \param component_id The Current Component ID
+    /// \param runner Runner Type
+    auto peers_info_to_json(const network::endpoint_t local, 
+                            const network::endpoint_t remote, 
+                            const std::vector<std::vector<network::endpoint_t>> shard,
+                            const std::optional<size_t> node_id,
+                            const size_t component_id,
+                            const cbdc::threepc::runner_type runner) 
+        -> Json::Value;
 }
 
 #endif

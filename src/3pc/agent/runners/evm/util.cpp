@@ -32,6 +32,10 @@ namespace cbdc::threepc::agent::runner {
         return evmc::hex(evmc::bytes(b.bytes, sizeof(b.bytes)));
     }
 
+    auto to_str(const network::endpoint_t address) -> std::string {
+        return "http://" + address.first + ":" + std::to_string(address.second);
+    } 
+
     auto to_hex_trimmed(const evmc::bytes32& b, const std::string& prefix)
         -> std::string {
         auto b_vec = std::vector<uint8_t>();

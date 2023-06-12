@@ -384,13 +384,16 @@ namespace cbdc::threepc::agent::runner {
     }
 
     auto tx_receipt_to_json(cbdc::threepc::agent::runner::evm_tx_receipt& rcpt,
-                            const std::shared_ptr<secp256k1_context>& ctx)
+                            [[maybe_unused]]const std::shared_ptr<secp256k1_context>& ctx)
         -> Json::Value {
         auto res = Json::Value();
 
         auto txid = tx_id(rcpt.m_tx);
 
-        res["transaction"] = tx_to_json(rcpt.m_tx, ctx);
+        #ifdef OPENCBDC
+            // eth_getTransactionReceipt part of https://ethereum.github.io/execution-apis/api-documentation/
+            res["transaction"] = tx_to_json(rcpt.m_tx, ctx);
+        #endif
         res["from"] = res["transaction"]["from"];
         res["to"] = res["transaction"]["to"];
         if(rcpt.m_create_address.has_value()) {
@@ -475,4 +478,91 @@ namespace cbdc::threepc::agent::runner {
         }
         return res;
     }
+
+    /// List of supported Sub-protocol.
+    /// @return  RAFT string
+    auto supportedSubProtocol() -> std::vector<std::string> {
+        return std::vector<std::string> { "RAFT" };
+    }
+
+    auto agent_network_to_json(
+        const network::endpoint_t local, 
+        const network::endpoint_t remote 
+    ) -> Json::Value {
+        auto res = Json::Value();
+        res["localAddress"] = to_str(local);
+        res["remoteAddress"] = to_str(remote);
+
+        return res;
+    }
+
+    auto shard_network_to_json(const std::vector<std::vector<network::endpoint_t>> endpoints) -> Json::Value {
+        auto res = Json::Value(Json::arrayValue);
+
+        for(auto v : endpoints ) {
+            for (auto endpoint : v) {
+                auto address = Json::Value();
+                address["address"] = "veneta:://shard-id@" + endpoint.first;
+                res.append(address);
+            }
+        }
+
+        return res;
+    }
+
+    auto protocols_to_json(cbdc::threepc::runner_type type) -> Json::Value {
+        auto res = Json::Value();
+        switch(type) {
+            case cbdc::threepc::runner_type::evm:
+                res["evm"] = Json::Value();
+                res["evm"]["version"] = 1;
+                break;
+            case cbdc::threepc::runner_type::lua:
+                res["lua"] = Json::Value();
+                res["lua"]["version"] = 1;
+                break;
+            default : 
+                break;
+        }
+
+        return res;
+    }
+
+    auto peers_info_to_json(const network::endpoint_t local,
+                            const network::endpoint_t remote,
+                            const std::vector<std::vector<network::endpoint_t>> shard,
+                            const std::optional<size_t> node_id,
+                            const size_t component_id,
+                            const cbdc::threepc::runner_type runner) 
+        -> Json::Value {
+            auto res = Json::Value();
+
+            res["version"] = 1;
+
+            std::string name = "VENETA DLT AGENT " + std::to_string(component_id);
+            if ( node_id.has_value()) {
+                name += " NODE " + std::to_string(node_id.value());
+            }
+            res["name"] = name;
+
+            res["network"] = Json::Value();
+            res["network"]["agent"] = agent_network_to_json(local, remote);
+            res["network"]["shard"] = shard_network_to_json(shard);
+
+            res["port"] = local.second;
+
+            // TODO : Create enode ID
+            res["id"] = "";
+            if (node_id.has_value()) {
+                res["id"] = node_id.value();
+            }
+
+            res["protocols"] = protocols_to_json(runner);
+
+            if ( runner == cbdc::threepc::runner_type::evm) {
+                res["enode"] = "enode:://";
+            }
+
+            return res;
+        }
 }
