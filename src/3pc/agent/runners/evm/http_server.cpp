@@ -483,6 +483,14 @@ namespace cbdc::threepc::agent::rpc {
                     callback(ret);
                 }
 
+#ifdef VENETA_DLT
+                if ( it->second.size() == 0) {
+                    ret["result"] = 0;
+                    callback(ret);
+                    return;
+                }
+#endif
+
                 auto maybe_acc
                     = cbdc::from_buffer<runner::evm_account>(it->second);
                 if(!maybe_acc.has_value()) {

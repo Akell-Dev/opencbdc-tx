@@ -1,5 +1,6 @@
 project(evm_runner)
 
+add_definitions(-DVENETA_DLT)
 add_library(evm_runner address.cpp
                        impl.cpp
                        math.cpp
