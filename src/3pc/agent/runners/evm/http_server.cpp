@@ -471,6 +471,7 @@ namespace cbdc::threepc::agent::rpc {
             m_log->warn("Unable to decode params", params_str);
             return false;
         }
+
         auto runner_params = std::move(maybe_runner_params.value());
         return exec_tx(
             callback,
@@ -487,6 +488,12 @@ namespace cbdc::threepc::agent::rpc {
                     // For accounts that don't exist yet, return 1
                     ret["result"] = to_hex_trimmed(evmc::uint256be(1));
                     callback(ret);
+                }
+
+                if ( it->second.size() == 0) {
+                    ret["result"] = 0;
+                    callback(ret);
+                    return;
                 }
 
                 auto maybe_acc

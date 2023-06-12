@@ -6,11 +6,23 @@
 #include "util/serialization/serializer.hpp"
 
 namespace cbdc {
-    auto operator<<(serializer& ser, const threepc::mml::rpc::request& req)
+    auto operator<<(serializer& ser, const threepc::mml::rpc::execute_request& req)
         -> serializer&;
 
-    auto operator>>(serializer& deser, threepc::mml::rpc::request& req)
+    auto operator>>(serializer& deser, threepc::mml::rpc::execute_request& req)
         -> serializer&;
+    
+    auto operator<<(serializer& ser, const threepc::mml::rpc::heartbeat_request& req) 
+        -> serializer&;
+
+    auto operator>>(serializer& deser, threepc::mml::rpc::heartbeat_request& req)
+        -> serializer&;
+
+    auto operator<<(serializer& ser, const threepc::mml::rpc::heartbeat_response& res)
+        ->serializer&;
+
+    auto operator>>(serializer* deser, threepc::mml::rpc::heartbeat_response& res) 
+        ->serializer&;
 }
 
 #endif

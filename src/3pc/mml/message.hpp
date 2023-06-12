@@ -16,9 +16,22 @@ namespace cbdc::threepc::mml::rpc {
         bool m_is_readonly_run{false};
     };
 
+    struct heartbeat_request {
+        parameter_type m_param;
+    };
+
+    struct heartbeat_response {
+        uint8_t m_param;
+    };
+
+    struct execute_response {
+        uint8_t _result;
+        std::string _result_str;
+    };
+
     /// MML RPC request type.
-    using request = execute_request;
+    using request = std::variant<execute_request, heartbeat_request>;
     /// MML RPC response type.
-    using response = interface::execute_return_type;
+    using response = std::variant<execute_response, heartbeat_response>;
 }
 #endif
