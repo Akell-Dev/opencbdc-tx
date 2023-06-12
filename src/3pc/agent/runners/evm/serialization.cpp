@@ -502,7 +502,7 @@ namespace cbdc::threepc::agent::runner {
         for(auto v : endpoints ) {
             for (auto endpoint : v) {
                 auto address = Json::Value();
-                address["address"] = "veneta:://shard-id@" + endpoint.first;
+                address["address"] = "veneta:://component-id@" + endpoint.first;
                 res.append(address);
             }
         }
