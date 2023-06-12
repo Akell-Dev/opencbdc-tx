@@ -69,3 +69,6 @@ build/tests
 
 # E2E Test results
 testruns/
+
+# benchmark dummy file
+tx_samples_0.txt
