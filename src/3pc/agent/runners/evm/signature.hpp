@@ -31,7 +31,11 @@ namespace cbdc::threepc::agent::runner {
                   hash_t& hash,
                   evm_tx_type type,
                   const std::shared_ptr<secp256k1_context>& ctx,
+#ifdef VENETA_DLT
+                  uint64_t chain_id = veneta_chain_id) -> evm_sig;
+#else
                   uint64_t chain_id = opencbdc_chain_id) -> evm_sig;
+#endif
 
     /// Checks the signature of an EVM transaction
     /// \param tx transaction to check signature for
@@ -41,7 +45,11 @@ namespace cbdc::threepc::agent::runner {
     /// nullopt otherwise
     auto check_signature(const cbdc::threepc::agent::runner::evm_tx& tx,
                          const std::shared_ptr<secp256k1_context>& ctx,
+#ifdef VENETA_DLT
+                         uint64_t chain_id = veneta_chain_id)
+#else
                          uint64_t chain_id = opencbdc_chain_id)
+#endif
         -> std::optional<evmc::address>;
 
     /// Calculates the hash for creating / validating the signature
@@ -49,7 +57,11 @@ namespace cbdc::threepc::agent::runner {
     /// \param chain_id unique chain ID, defaults to 0xcbdc.
     /// \return the sighash of the transaction
     auto sig_hash(const cbdc::threepc::agent::runner::evm_tx& tx,
+#ifdef VENETA_DLT
+                  uint64_t chain_id = veneta_chain_id) -> hash_t;
+#else
                   uint64_t chain_id = opencbdc_chain_id) -> hash_t;
+#endif
 
 }
 #endif

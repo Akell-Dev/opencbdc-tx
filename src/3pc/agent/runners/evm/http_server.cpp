@@ -1030,7 +1030,11 @@ namespace cbdc::threepc::agent::rpc {
         const Json::Value& /*params*/,
         const server_type::result_callback_type& callback) -> bool {
         auto ret = Json::Value();
+#ifdef VENETA_DLT
+        ret["result"] = to_hex_trimmed(evmc::uint256be(veneta_chain_id));
+#else
         ret["result"] = to_hex_trimmed(evmc::uint256be(opencbdc_chain_id));
+#endif
         callback(ret);
         return true;
     }

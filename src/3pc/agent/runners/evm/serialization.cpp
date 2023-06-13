@@ -373,8 +373,11 @@ namespace cbdc::threepc::agent::runner {
         res["s"] = to_hex_trimmed(tx.m_sig.m_s);
         res["v"] = to_hex_trimmed(tx.m_sig.m_v);
 
+#ifdef VENETA_DLT
+        res["chainId"] = to_hex_trimmed(evmc::uint256be(veneta_chain_id));
+#else
         res["chainId"] = to_hex_trimmed(evmc::uint256be(opencbdc_chain_id));
-
+#endif
         auto maybe_from_addr = check_signature(tx, ctx);
         if(maybe_from_addr) {
             res["from"] = "0x" + to_hex(maybe_from_addr.value());

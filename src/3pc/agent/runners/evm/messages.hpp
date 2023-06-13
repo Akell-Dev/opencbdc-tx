@@ -16,8 +16,15 @@
 #include <vector>
 
 namespace cbdc::threepc::agent::runner {
+
+#ifdef VENETA_DLT
+    // EVM Chain ID for Veneta DLT
+    // V : 56 E : 45 N : 4E E : 45 T : 54 A : 41
+    static constexpr uint64_t veneta_chain_id = 0x56454E455441;
+#else
     // EVM Chain ID for OpenCBDC
     static constexpr uint64_t opencbdc_chain_id = 0xcbdc;
+#endif
 
     /// EVM account type
     struct evm_account {

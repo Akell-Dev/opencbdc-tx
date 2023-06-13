@@ -32,7 +32,11 @@ namespace cbdc::threepc::agent::runner {
     /// \param for_sighash use the formatting needed to calculate the sighash
     /// \return the rlp representation of the transaction
     auto tx_encode(const cbdc::threepc::agent::runner::evm_tx& tx,
+#ifdef VENETA_DLT
+                   uint64_t chain_id = veneta_chain_id,
+#else
                    uint64_t chain_id = opencbdc_chain_id,
+#endif
                    bool for_sighash = false) -> cbdc::buffer;
 
     /// Converts a given buffer to an evm_tx
@@ -45,7 +49,11 @@ namespace cbdc::threepc::agent::runner {
     ///         value could be decoded
     auto tx_decode(const cbdc::buffer& buf,
                    const std::shared_ptr<logging::log>& logger,
+#ifdef VENETA_DLT
+                    uint64_t chain_id = veneta_chain_id)
+#else
                    uint64_t chain_id = opencbdc_chain_id)
+#endif
         -> std::optional<
             std::shared_ptr<cbdc::threepc::agent::runner::evm_tx>>;
 
@@ -65,7 +73,11 @@ namespace cbdc::threepc::agent::runner {
     /// \return the evm_tx that was decoded or std::nullopt if no valid
     ///         value could be decoded
     auto tx_from_json(const Json::Value& json,
+#ifdef VENETA_DLT
+                      uint64_t chain_id = veneta_chain_id)
+#else
                       uint64_t chain_id = opencbdc_chain_id)
+#endif
         -> std::optional<
             std::shared_ptr<cbdc::threepc::agent::runner::evm_tx>>;
 
@@ -77,7 +89,11 @@ namespace cbdc::threepc::agent::runner {
     /// \return the evm_dryrun_tx that was decoded or std::nullopt if no valid
     ///         value could be decoded
     auto dryrun_tx_from_json(const Json::Value& json,
+#ifdef VENETA_DLT
+                            uint64_t chain_id = veneta_chain_id)
+#else
                              uint64_t chain_id = opencbdc_chain_id)
+#endif
         -> std::optional<
             std::shared_ptr<cbdc::threepc::agent::runner::evm_dryrun_tx>>;
 
@@ -165,7 +181,11 @@ namespace cbdc::threepc::agent::runner {
     /// \param chain_id unique chain ID, defaults to 0xcbdc.
     /// \return the eth compatible txid of the transaction
     auto tx_id(const cbdc::threepc::agent::runner::evm_tx& tx,
+#ifdef VENETA_DLT
+                uint64_t chain_id = veneta_chain_id) -> cbdc::hash_t;
+#else
                uint64_t chain_id = opencbdc_chain_id) -> cbdc::hash_t;
+#endif
 
 
     /// Encodes to given agents list a eth-RPC compatible representation
