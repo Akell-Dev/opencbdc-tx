@@ -415,7 +415,7 @@ namespace cbdc::threepc::agent::runner {
     auto evm_runner::run_execute_real_transaction() -> bool {
         auto maybe_tx = cbdc::from_buffer<evm_tx>(m_param);
         if(!maybe_tx.has_value()) {
-            m_log->error("RUN_EXECUTE_REAL_TRANSCTION : Unable to deserialize transaction");
+            m_log->error("Unable to deserialize transaction");
             m_result_callback(error_code::function_load);
             return true;
         }
@@ -434,7 +434,7 @@ namespace cbdc::threepc::agent::runner {
     auto evm_runner::run_execute_dryrun_transaction() -> bool {
         auto maybe_tx = cbdc::from_buffer<evm_dryrun_tx>(m_param);
         if(!maybe_tx.has_value()) {
-            m_log->error("RUN_EXECUTE_DRYRUN_TRANSACTION : Unable to deserialize transaction");
+            m_log->error("Unable to deserialize transaction");
             m_result_callback(error_code::function_load);
             return true;
         }

@@ -363,7 +363,7 @@ namespace cbdc::threepc::agent::rpc {
         const server_type::result_callback_type& callback) -> bool {
         auto maybe_tx = raw_tx_from_json(params[0]);
         if(!maybe_tx.has_value()) {
-            m_log->warn("HANDLE_DECODE_RAW_TRANSACTION : Unable to deserialize transaction");
+            m_log->warn("Unable to deserialize transaction");
             return false;
         }
         auto& tx = maybe_tx.value();
@@ -380,7 +380,7 @@ namespace cbdc::threepc::agent::rpc {
 
         auto maybe_tx = raw_tx_from_json(params[0]);
         if(!maybe_tx.has_value()) {
-            m_log->warn("HANDLE_SEND_RAW_TRANSACTION : Unable to deserialize transaction");
+            m_log->warn("Unable to deserialize transaction");
             return false;
         }
         auto& tx = maybe_tx.value();

@@ -83,7 +83,6 @@ namespace cbdc::threepc::agent::runner {
         auto tx = std::make_shared<cbdc::threepc::agent::runner::evm_tx>();
         auto maybe_rlp_tx = check_tx_decode(buf, logger, tx);
         if(!maybe_rlp_tx.has_value()) {
-            std::cout << "MAYBE_RLP_TX IS EMPTY" << std::endl;
             return std::nullopt;
         }
         auto rlp_tx = maybe_rlp_tx.value();
@@ -95,7 +94,6 @@ namespace cbdc::threepc::agent::runner {
                 = rlp_tx.value_at(element++).value<evmc::uint256be>();
             if(to_uint64(tx_chain_id) != chain_id) {
                 if(logger) {
-                    std::cout << "tx is Wrong Chain ID" << std::endl;
                     logger->error("tx is wrong chain ID");
                 }
                 return std::nullopt;
@@ -139,7 +137,6 @@ namespace cbdc::threepc::agent::runner {
                 auto tx_chain_id = (small_v - eip155_v_offset) / 2;
                 if(tx_chain_id != chain_id) {
                     if(logger) {
-                        std::cout << "tx is wrong chain ID(" << tx_chain_id << ") where expected (" << chain_id << std::endl;
                         logger->error("tx is wrong chain ID (",
                                       tx_chain_id,
                                       ") where expected (",
@@ -281,13 +278,11 @@ namespace cbdc::threepc::agent::runner {
     auto raw_tx_from_json(const Json::Value& param) -> std::optional<
         std::shared_ptr<cbdc::threepc::agent::runner::evm_tx>> {
         if(!param.isString()) {
-            std::cout << "PARAM IS NO STRING" << std::endl;
             return std::nullopt;
         }
         auto params_str = param.asString();
         auto maybe_raw_tx = cbdc::buffer::from_hex(params_str.substr(2));
         if(!maybe_raw_tx.has_value()) {
-            std::cout << "MAY RAW TX BUFFER IS EMPTY" << std::endl;
             return std::nullopt;
         }
 
