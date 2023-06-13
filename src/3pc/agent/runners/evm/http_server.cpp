@@ -1368,7 +1368,11 @@ namespace cbdc::threepc::agent::rpc {
         const Json::Value& /*params*/,
         const server_type::result_callback_type& callback) -> bool {
         auto ret = Json::Value();
+#ifdef VENETA_DLT
+        ret["result"] = "veneta_dlt/v0.alpha";
+#else
         ret["result"] = "opencbdc/v0.0";
+#endif
         callback(ret);
         return true;
     }
