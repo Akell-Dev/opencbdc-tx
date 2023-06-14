@@ -74,6 +74,7 @@ add_compile_options(-Wall
                     -fno-exceptions)
 
 add_compile_definitions(_NO_EXCEPTION)
+add_compile_definitions(VENETA_DLT)
 
 if(W_SHADOW_ALL)
     add_compile_options(-Wshadow-all)

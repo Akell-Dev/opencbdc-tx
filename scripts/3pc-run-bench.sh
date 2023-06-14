@@ -27,7 +27,7 @@ for arg in "$@"; do
     elif [[ "$arg" == "--port"* ]]; then
         PORT="${arg#--port=}"
     elif [[ "$arg" == "--loglevel"* ]]; then
-        LOGLEVEL="${arg#--leglevel=}"
+        LOGLEVEL="${arg#--loglevel=}"
     elif [[ "$arg" == "--transfer"* ]]; then
         TRANSFER="${arg#--transfer=}"
     elif [[ "$arg" == "--account"* ]]; then

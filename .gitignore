@@ -72,3 +72,9 @@ testruns/
 
 # benchmark dummy file
 tx_samples_0.txt
+
+# local test run
+*.dat
+*_raft_log_*/
+
+docker-compose-*.yml
