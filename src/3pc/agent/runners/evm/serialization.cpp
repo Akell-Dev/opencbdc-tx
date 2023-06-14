@@ -393,13 +393,21 @@ namespace cbdc::threepc::agent::runner {
 
         auto txid = tx_id(rcpt.m_tx);
 
-        #ifdef OPENCBDC
-            // eth_getTransactionReceipt part of https://ethereum.github.io/execution-apis/api-documentation/
-            res["transaction"] = tx_to_json(rcpt.m_tx, ctx);
-        #endif
+#ifdef VENETA_DLT
+        auto transaction = tx_to_json(rcpt.m_tx, ctx);
+        auto from = transaction["from"];
+        auto to = transaction["to"];
+
+        res["from"] = from;
+        res["to"] = to;
+#else
+        // eth_getTransactionReceipt part of
+        // https://ethereum.github.io/execution-apis/api-documentation/
+        res["transaction"] = tx_to_json(rcpt.m_tx, ctx);
         res["from"] = res["transaction"]["from"];
         res["to"] = res["transaction"]["to"];
-        if(rcpt.m_create_address.has_value()) {
+#endif
+            if(rcpt.m_create_address.has_value()) {
             res["contractAddress"]
                 = "0x" + to_hex(rcpt.m_create_address.value());
         }
