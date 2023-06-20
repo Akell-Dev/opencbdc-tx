@@ -527,7 +527,7 @@ namespace cbdc::threepc::agent::rpc {
         auto runner_params = std::move(maybe_runner_params.value());
         return exec_tx(
             callback,
-            runner::evm_runner_function::read_account,
+            runner::evm_runner_function::read_account_balance,
             runner_params,
             true,
             [callback, runner_params](interface::exec_return_type res) {
@@ -1156,7 +1156,6 @@ namespace cbdc::threepc::agent::rpc {
                     }
                     if(include_tx_details) {
                         auto json_tx = tx_to_json(tx_rcpt.m_tx, m_secp);
-                        json_tx["blockHash"] = "0x" + to_hex(tn256);
                         json_tx["blockNumber"] = to_hex_trimmed(tn256);
                         json_tx["transactionIndex"] = "0x0";
                         ret["result"]["transactions"].append(json_tx);

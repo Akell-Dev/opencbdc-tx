@@ -58,7 +58,7 @@ namespace cbdc::threepc::agent::runner {
         uint8_t f = invalid_function;
         std::memcpy(&f, m_function.data(), sizeof(uint8_t));
         if(f
-           > static_cast<uint8_t>(evm_runner_function::read_account_storage)) {
+           > static_cast<uint8_t>(evm_runner_function::unknown_evm_runner_function)) {
             m_log->error("Unknown EVM runner function ", f);
             m_result_callback(error_code::function_load);
             return;
@@ -97,6 +97,10 @@ namespace cbdc::threepc::agent::runner {
                 success = run_get_account(); // m_param contains the right key
                                              // already
                 break;
+            case evm_runner_function::read_account_balance:
+                success = run_get_account_balance();
+                break;
+            case evm_runner_function::unknown_evm_runner_function:
             default:
                 m_result_callback(error_code::function_load);
                 break;
@@ -122,6 +126,21 @@ namespace cbdc::threepc::agent::runner {
                 ret[m_param] = v;
                 m_result_callback(ret);
             });
+    }
+
+    auto evm_runner::run_get_account_balance() -> bool {
+        return m_try_lock_callback(
+            m_param,
+            broker::lock_type::read,
+            [this](const broker::interface::try_lock_return_type&) {
+                m_log->trace("m_param : ", m_param.to_hex());
+                auto maybe_account = evmc::from_hex(m_param.to_hex());
+
+                auto ret = runtime_locking_shard::state_update_type();
+                ret[m_param] = cbdc::buffer();
+                m_result_callback(ret);
+            }
+        );
     }
 
     auto evm_runner::run_get_block_number() -> bool {

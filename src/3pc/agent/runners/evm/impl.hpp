@@ -41,6 +41,10 @@ namespace cbdc::threepc::agent::runner {
         get_logs,
         /// Read a specific key of an account's storage
         read_account_storage,
+        /// Read balance of an account.
+        read_account_balance,
+        /// Unknown Runner Function,
+        unknown_evm_runner_function,
     };
 
     /// Executes EVM transactions, implementing the runner interface.
@@ -87,6 +91,7 @@ namespace cbdc::threepc::agent::runner {
         auto run_execute_real_transaction() -> bool;
         auto run_execute_dryrun_transaction() -> bool;
         auto run_get_account_code() -> bool;
+        auto run_get_account_balance() -> bool;
         auto run_get_transaction() -> bool;
         auto run_get_transaction_receipt() -> bool;
         auto run_execute_transaction(const evmc::address& from,
