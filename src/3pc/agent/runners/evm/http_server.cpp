@@ -527,7 +527,7 @@ namespace cbdc::threepc::agent::rpc {
         auto runner_params = std::move(maybe_runner_params.value());
         return exec_tx(
             callback,
-            runner::evm_runner_function::read_account_balance,
+            runner::evm_runner_function::read_account,
             runner_params,
             true,
             [callback, runner_params](interface::exec_return_type res) {
@@ -1139,6 +1139,13 @@ namespace cbdc::threepc::agent::rpc {
                     = "0x0000000000000000000000000000000000000000";
                 ret["result"]["transactions"] = Json::Value(Json::arrayValue);
                 ret["result"]["nonce"] = "0x0000000000000000";
+
+                auto block = cbdc::threepc::agent::runner::evm_block();
+                block.height = tn256;
+                block.parent_hash = (evmc::uint256be(blk.m_ticket_number - 1));
+
+            //    auto block_hash = block_encode(block);
+                // m_log->warn(block_hash.to_hex());
 
                 auto bloom = cbdc::buffer();
                 constexpr auto bits_in_32_bytes = 256;

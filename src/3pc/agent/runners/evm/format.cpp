@@ -5,8 +5,6 @@
 
 #include "format.hpp"
 
-#include "util/serialization/format.hpp"
-
 namespace cbdc {
     auto operator<<(serializer& ser,
                     const threepc::agent::runner::evm_account& acc)
@@ -74,6 +72,16 @@ namespace cbdc {
         return deser >> tx.m_type >> tx.m_to >> tx.m_value >> tx.m_nonce
             >> tx.m_gas_price >> tx.m_gas_limit >> tx.m_gas_tip_cap
             >> tx.m_gas_fee_cap >> tx.m_input >> tx.m_access_list >> tx.m_sig;
+    }
+
+    auto operator<<(serializer& ser, const threepc::agent::runner::evm_block& block)
+        -> serializer& {
+            return ser << block.height;
+    }
+
+    auto operator >> (serializer& deser, threepc::agent::runner::evm_block& block)
+        -> serializer& {
+            return deser >> block.height;
     }
 
     auto operator<<(serializer& ser,

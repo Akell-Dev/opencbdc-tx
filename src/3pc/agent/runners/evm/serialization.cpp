@@ -205,6 +205,21 @@ namespace cbdc::threepc::agent::runner {
         return buf;
     }
 
+    auto block_encode(const cbdc::threepc::agent::runner::evm_block& block) 
+        -> cbdc::buffer {
+
+        auto buf = cbdc::buffer();
+        auto ser = cbdc::buffer_serializer(buf);
+
+        auto rlp_block = rlp_value(rlp_value_type::array);
+
+        rlp_block.push_back(make_rlp_value(block.height, false));
+        rlp_block.push_back(make_rlp_value(block.parent_hash, false));
+        
+        ser << rlp_block ;
+        return buf;
+    }
+
     auto dryrun_tx_from_json(const Json::Value& json, uint64_t chain_id)
         -> std::optional<
             std::shared_ptr<cbdc::threepc::agent::runner::evm_dryrun_tx>> {

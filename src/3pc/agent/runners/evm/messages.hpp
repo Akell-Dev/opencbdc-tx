@@ -146,6 +146,11 @@ namespace cbdc::threepc::agent::runner {
         std::vector<evm_tx_receipt> m_transactions{};
     };
 
+    struct evm_block {
+        evmc::uint256be parent_hash{};
+        evmc::uint256be height{};
+    };
+
     /// Describes the parameters of a query on EVM logs - used to transfer
     /// these parameters from the getLogs API method to the runner
     struct evm_log_query {

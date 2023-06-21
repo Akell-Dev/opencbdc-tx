@@ -8,6 +8,11 @@
 
 #include "messages.hpp"
 #include "util/serialization/serializer.hpp"
+#include "util/serialization/format.hpp"
+
+#include "3pc/agent/runners/evm/util.hpp"
+
+#include <evmc/evmc.hpp>
 
 namespace cbdc {
     auto operator<<(serializer& ser,
@@ -25,6 +30,11 @@ namespace cbdc {
     auto operator<<(serializer& ser, const threepc::agent::runner::evm_tx& tx)
         -> serializer&;
     auto operator>>(serializer& deser, threepc::agent::runner::evm_tx& tx)
+        -> serializer&;
+
+    auto operator<<(serializer& ser, const threepc::agent::runner::evm_block& block)
+        -> serializer&;
+    auto operator>>(serializer& deser, threepc::agent::runner::evm_block& block)
         -> serializer&;
 
     auto operator<<(serializer& ser, const threepc::agent::runner::evm_sig& s)
