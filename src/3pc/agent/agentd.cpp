@@ -22,6 +22,8 @@
 #include "util/rpc/tcp_server.hpp"
 #include "util/serialization/format.hpp"
 
+#include "3pc/config.hpp"
+
 #include <csignal>
 
 auto main(int argc, char** argv) -> int {
@@ -30,6 +32,28 @@ auto main(int argc, char** argv) -> int {
 
     auto sha2_impl = SHA256AutoDetect();
     log->info("using sha2: ", sha2_impl);
+
+    /// test area
+    {
+        auto maybe_option = cbdc::threepc::load_options("./test.cfg");
+        if(std::holds_alternative<std::string>(maybe_option)) {
+            std::cerr << "Error loading config file: test.cfg\n"
+                << std::get<std::string>(maybe_option) << std::endl;
+                return -1;
+        }
+
+        auto option = std::get<cbdc::threepc::options>(maybe_option);
+
+        auto maybe_converted_cfg = cbdc::threepc::convert(option);
+
+        if ( !maybe_converted_cfg.has_value() ) {
+            std::cout << "not converted cfg" << std::endl;
+        } else { 
+            auto converted_cfg = maybe_converted_cfg.value();
+
+            std::cout << converted_cfg.m_component_id << std::endl;
+        }
+    }
 
     auto cfg = cbdc::threepc::read_config(argc, argv);
     if(!cfg.has_value()) {

@@ -2,7 +2,9 @@ project(3pc)
 
 include_directories(.)
 
-add_library(threepc util.cpp)
+add_library(threepc util.cpp
+                    config.cpp
+)
 
 add_subdirectory(ticket_machine)
 add_subdirectory(runtime_locking_shard)

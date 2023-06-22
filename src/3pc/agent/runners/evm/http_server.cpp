@@ -1142,10 +1142,9 @@ namespace cbdc::threepc::agent::rpc {
 
                 auto block = cbdc::threepc::agent::runner::evm_block();
                 block.height = tn256;
-                block.parent_hash = (evmc::uint256be(blk.m_ticket_number - 1));
 
-            //    auto block_hash = block_encode(block);
-                // m_log->warn(block_hash.to_hex());
+                auto block_hash = block_id(block);
+                m_log->warn("0x" + to_string(block_hash));
 
                 auto bloom = cbdc::buffer();
                 constexpr auto bits_in_32_bytes = 256;

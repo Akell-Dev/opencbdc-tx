@@ -16,7 +16,9 @@ namespace cbdc::threepc {
         /// Base token transfer
         transfer,
         /// ERC20 token transfer
-        erc20
+        erc20,
+        /// Not Supported
+        not_supported
     };
 
     /// Execution/transaction model
@@ -25,6 +27,8 @@ namespace cbdc::threepc {
         lua,
         /// Ethereum-style transactions using EVM.
         evm,
+        /// Not Supported
+        not_supported
     };
 
     /// Configuration parameters for a phase two system.

@@ -24,6 +24,12 @@ namespace cbdc::threepc::agent::runner {
         return keccak_data(tx_ser.data(), tx_ser.size());
     }
 
+    auto block_id(const cbdc::threepc::agent::runner::evm_block& block) 
+     -> cbdc::hash_t {
+        auto block_ser = block_encode(block);
+        return keccak_data(block_ser.data(), block_ser.size());
+    }
+
     auto is_valid_rlp_tx(evm_tx_type type, const rlp_value& rlp_tx) -> bool {
         static constexpr size_t elements_in_dynamic_fee_transaction = 12;
         static constexpr size_t elements_in_access_list_transaction = 11;
@@ -214,7 +220,6 @@ namespace cbdc::threepc::agent::runner {
         auto rlp_block = rlp_value(rlp_value_type::array);
 
         rlp_block.push_back(make_rlp_value(block.height, false));
-        rlp_block.push_back(make_rlp_value(block.parent_hash, false));
         
         ser << rlp_block ;
         return buf;

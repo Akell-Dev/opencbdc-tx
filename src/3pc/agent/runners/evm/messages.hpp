@@ -147,7 +147,6 @@ namespace cbdc::threepc::agent::runner {
     };
 
     struct evm_block {
-        evmc::uint256be parent_hash{};
         evmc::uint256be height{};
     };
 

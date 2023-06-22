@@ -31,8 +31,6 @@ namespace cbdc::threepc {
         cbdc::threepc::runner_type m_runner_type;
         size_t m_loadgen_accounts;
 
-        size_t m_loadgen_accounts;
-
         cbdc::threepc::load_type m_load_type;
 
         double m_contention_rate;
@@ -71,6 +69,6 @@ namespace cbdc::threepc {
 
     auto check_options(const options& option) -> std::optional<std::string>;
 
-    auto convert(const options& option, std::optional<config>& config);
+    auto convert(const options option) -> std::optional<cbdc::threepc::config>;
 }
 #endif

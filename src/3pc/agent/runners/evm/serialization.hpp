@@ -179,6 +179,8 @@ namespace cbdc::threepc::agent::runner {
     auto access_list_to_json(cbdc::threepc::agent::runner::evm_access_list& al)
         -> Json::Value;
 
+    auto block_id(const cbdc::threepc::agent::runner::evm_block& block) -> cbdc::hash_t;
+
     /// Calculate ethereum-compatible txid
     /// \param tx transaction to calculate ID for
     /// \param chain_id unique chain ID, defaults to 0xcbdc.
