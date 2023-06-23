@@ -5,6 +5,8 @@
 #include <variant>
 #include <optional>
 
+#include <algorithm>
+
 #include "util/common/config.hpp"
 #include "util/common/logging.hpp"
 
@@ -15,6 +17,7 @@ namespace cbdc::threepc {
         static constexpr size_t initial_count{0};
         static constexpr size_t initial_component_id{0};
         static constexpr auto initial_log_level = logging::log_level::warn;
+        static constexpr auto initial_contention_rate = 0.0;
     }
 
     using endpoints = std::vector<network::endpoint_t>;
@@ -48,7 +51,7 @@ namespace cbdc::threepc {
     static constexpr auto count_postfix = "count";
     static constexpr auto runner_postfix = "type";
     static constexpr auto txtype_postfix = "txtype";
-    static constexpr auto account_postfix = "account";
+    static constexpr auto account_postfix = "accounts";
 
     static constexpr auto component_id_prefix = "component_id";
     static constexpr auto node_id_prefix = "node_id";

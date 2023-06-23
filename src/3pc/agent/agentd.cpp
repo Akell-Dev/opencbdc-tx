@@ -25,6 +25,7 @@
 #include "3pc/config.hpp"
 
 #include <csignal>
+#include <memory>
 
 auto main(int argc, char** argv) -> int {
     auto log = std::make_shared<cbdc::logging::log>(
@@ -50,9 +51,10 @@ auto main(int argc, char** argv) -> int {
             std::cout << "not converted cfg" << std::endl;
         } else { 
             auto converted_cfg = maybe_converted_cfg.value();
-
-            std::cout << converted_cfg.m_component_id << std::endl;
         }
+    }
+    {
+        log->set_logfile_name("output.txt");
     }
 
     auto cfg = cbdc::threepc::read_config(argc, argv);
@@ -62,7 +64,6 @@ auto main(int argc, char** argv) -> int {
     }
 
     log->set_loglevel(cfg->m_loglevel);
-
     if(cfg->m_agent_endpoints.size() <= cfg->m_component_id) {
         log->error("No endpoint for component id");
         return 1;

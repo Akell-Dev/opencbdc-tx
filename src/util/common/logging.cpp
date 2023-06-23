@@ -23,6 +23,10 @@ namespace cbdc::logging {
         m_logfile = std::move(logfile);
     }
 
+    void log::set_logfile_name(std::string file_name) {
+        m_logfile = std::move(std::make_unique<std::fstream>(file_name, std::fstream::out));
+    }
+
     void log::set_loglevel(log_level level) {
         m_loglevel = level;
     }

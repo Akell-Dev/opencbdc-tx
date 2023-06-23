@@ -52,9 +52,11 @@ namespace cbdc::threepc {
             auto ret = endpoints();
 
             auto const component_count_key = get_component_count(component_prefix);
-            auto const component_count = cfg.get_ulong(component_count_key);
+            auto const maybe_component_count = cfg.get_ulong(component_count_key);
 
-            for(size_t i{0}; component_count; i++) {
+            auto component_count = maybe_component_count.value();
+
+            for(size_t i{0}; i < component_count; i++) {
                 const auto ith_component_key = get_ith_component(i, component_prefix, endpoint_postfix);
                 const auto ith_component_ep = cfg.get_endpoint(ith_component_key);
 
@@ -204,7 +206,7 @@ namespace cbdc::threepc {
                 auto loadgen_accounts_key = get_loadgen_accounts_key();
                 auto maybe_loadgen_accounts = cfg.get_ulong(loadgen_accounts_key);
 
-                if( maybe_loadgen_accounts.has_value()) {
+                if( !maybe_loadgen_accounts.has_value() ) {
                     return "Accounts is not defined";
                 }
 
@@ -219,11 +221,12 @@ namespace cbdc::threepc {
                 auto maybe_contention_rate
                     = cfg.get_decimal(contention_rate_prefix);
 
-                if(maybe_contention_rate.has_value()) {
-                    return "Contention Rate is not Defined";
+                if( !maybe_contention_rate.has_value() ) {
+                    option.m_contention_rate = defaults::initial_contention_rate;
+                } else {
+                    option.m_contention_rate = maybe_contention_rate.has_value();
                 }
 
-                option.m_contention_rate = maybe_contention_rate.has_value();
                 return std::nullopt;
         }
 
@@ -273,6 +276,21 @@ namespace cbdc::threepc {
                 }
 
                 err = read_runner_options(opts, cfg);
+                if ( err.has_value() ) {
+                    return err.value();
+                }
+
+                err = read_loadgen_txtype_options(opts, cfg);
+                if ( err.has_value() ) {
+                    return err.value();
+                }
+
+                err = read_loadgen_account_options(opts, cfg);
+                if ( err.has_value() ) {
+                    return err.value();
+                }
+                
+                err = read_contention_rate_options(opts, cfg);
                 if ( err.has_value() ) {
                     return err.value();
                 }
@@ -331,6 +349,23 @@ namespace cbdc::threepc {
                 auto config = cbdc::threepc::config{};
 
                 config.m_component_id = option.m_component_id;
+                config.m_node_id = option.m_node_id;
+                config.m_loglevel = option.m_loglevel;
+                config.m_runner_type = option.m_runner_type;
+                config.m_contention_rate = option.m_contention_rate;
+                config.m_loadgen_accounts = option.m_loadgen_accounts;
+                config.m_load_type = option.m_load_type;
+                
+                for (auto v : option.m_ticket_machine_endpoints) {
+                    config.m_ticket_machine_endpoints.push_back(v);
+                }
+
+                for (auto v : option.m_agent_endpoints) {
+                    config.m_agent_endpoints.push_back(v);
+                }
+
+                config.m_shard_endpoints.assign(option.m_shard_endpoints.begin(), option.m_shard_endpoints.end());
+                copy(option.m_shard_endpoints.begin(), option.m_shard_endpoints.end(), config.m_shard_endpoints.begin());
 
                 return config;
         }

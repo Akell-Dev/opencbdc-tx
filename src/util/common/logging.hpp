@@ -69,6 +69,8 @@ namespace cbdc::logging {
         /// \param logfile the stream to which to write log output.
         void set_logfile(std::unique_ptr<std::ostream> logfile);
 
+        void set_logfile_name(std::string file_name);
+
         /// Changes the log level threshold.
         /// \param level anything for this log level and more severe will
         ///              be logged to the configured outputs.
