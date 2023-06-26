@@ -235,15 +235,15 @@ namespace cbdc::threepc {
                 auto opts = options{};
                 auto cfg = cbdc::config::parser(config_file);
                 
-                auto maybe_component_id = cfg.get_ulong(component_id_prefix);
-                if(!maybe_component_id.has_value()) {
-                    return "Component ID required";
-                }
+                // auto maybe_component_id = cfg.get_ulong(component_id_prefix);
+                // if(!maybe_component_id.has_value()) {
+                //     return "Component ID required";
+                // }
 
-                opts.m_component_id = maybe_component_id.value();
+                // opts.m_component_id = maybe_component_id.value();
 
-                auto maybe_node_id = cfg.get_ulong(node_id_prefix);
-                opts.m_node_id = maybe_node_id;
+                // auto maybe_node_id = cfg.get_ulong(node_id_prefix);
+                // opts.m_node_id = maybe_node_id;
 
                 auto maybe_log_level = cfg.get_string(loglevel_postfix);
                 if ( maybe_log_level.has_value()) {
@@ -344,12 +344,18 @@ namespace cbdc::threepc {
                 return opt;
         }
 
-        auto convert(const options option) 
+        auto convert(const options option , std::string& component_id, std::string& node_id) 
             -> std::optional<cbdc::threepc::config> {
                 auto config = cbdc::threepc::config{};
 
-                config.m_component_id = option.m_component_id;
-                config.m_node_id = option.m_node_id;
+                auto maybe_component_id = cbdc::threepc::fromString<int>(component_id);
+                size_t real_component_id = 0;
+                if ( maybe_component_id.has_value()) {
+                    real_component_id = maybe_component_id.value();
+                }
+
+                config.m_component_id = real_component_id;
+                config.m_node_id = cbdc::threepc::fromString<size_t>(node_id);
                 config.m_loglevel = option.m_loglevel;
                 config.m_runner_type = option.m_runner_type;
                 config.m_contention_rate = option.m_contention_rate;

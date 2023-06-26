@@ -72,6 +72,14 @@ namespace cbdc::threepc {
 
     auto check_options(const options& option) -> std::optional<std::string>;
 
-    auto convert(const options option) -> std::optional<cbdc::threepc::config>;
+    auto convert(const options option, std::string& component_id, std::string& node_id) -> std::optional<cbdc::threepc::config>;
+
+    template<typename T>
+    [[nodiscard]]auto fromString(const std::string& str) -> std::optional<T> {
+        std::istringstream ss(str);
+        T ret;
+        ss >> ret;
+        return ret;
+    };
 }
 #endif
