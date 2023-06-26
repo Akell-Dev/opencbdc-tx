@@ -145,7 +145,8 @@ namespace cbdc::logging {
                 if(m_stdout) {
                     std::cout << formatted_statement;
                 }
-                *m_logfile << formatted_statement;
+                /// File write buffer flushing
+                *m_logfile << formatted_statement << std::flush;
             }
         }
     };
