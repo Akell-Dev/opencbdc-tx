@@ -80,6 +80,6 @@ namespace cbdc::threepc {
         T ret;
         ss >> ret;
         return ret;
-    };
+    }
 }
 #endif
