@@ -10,17 +10,38 @@
 #include "util/rpc/tcp_server.hpp"
 #include "util/serialization/format.hpp"
 
+#include "3pc/config.hpp"
+
 #include <csignal>
 
 auto main(int argc, char** argv) -> int {
     auto log
-        = std::make_shared<cbdc::logging::log>(cbdc::logging::log_level::warn);
-    auto cfg = cbdc::threepc::read_config(argc, argv);
-    if(!cfg.has_value()) {
-        log->error("Error parsing options");
-        return 1;
+        = std::make_shared<cbdc::logging::log>(cbdc::logging::log_level::trace);
+    
+    auto args = cbdc::config::get_args(argc, argv);
+    if ( args.size() < 5) {
+        std::cerr << "Usage: " << args[0] << " <component id> <node id>"
+                  << " <configure file> <log file>" << std::endl;
+        return -1;
     }
+
+    auto maybe_option = cbdc::threepc::load_options(args[3]);
+    if ( std::holds_alternative<std::string>(maybe_option)) {
+        std::cerr << "Error loading config file : " << args[3] << "\n"
+                  << std::get<std::string>(maybe_option) << std::endl;
+    }
+
+    auto option = std::get<cbdc::threepc::options>(maybe_option);
+
+    auto cfg = cbdc::threepc::convert(option, args[1], args[2]);
+    if (!cfg.has_value()) {
+        std::cout << "not converted cfg" << std::endl;
+        return -1;
+    }
+    
     log->set_loglevel(cfg->m_loglevel);
+    log->set_logfile_name(args[4]);
+
     if(cfg->m_component_id >= cfg->m_ticket_machine_endpoints.size()) {
         log->error("No endpoint specified for ticket machine");
         return 1;

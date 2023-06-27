@@ -37,13 +37,13 @@ auto main(int argc, char** argv) -> int {
     auto args = cbdc::config::get_args(argc, argv);
     if(args.size() < 5) {
         std::cerr << "Usage: " << args[0] << " <component id> <node id>"
-                  << "<configure file> <log file>" << std::endl;
+                  << " <configure file> <log file>" << std::endl;
         return -1;
     }
 
     auto maybe_option = cbdc::threepc::load_options(args[3]);
     if(std::holds_alternative<std::string>(maybe_option)) {
-        std::cerr << "Error loading config file: test.cfg\n"
+        std::cerr << "Error loading config file: " << args[3] << "\n"
                   << std::get<std::string>(maybe_option) << std::endl;
         return -1;
     }
@@ -57,15 +57,6 @@ auto main(int argc, char** argv) -> int {
         std::cout << "not converted cfg" << std::endl;
         return -1;
     }
-
-    std::cout << cfg->m_component_id << std::endl;
-    std::cout << cfg->m_node_id.value() << std::endl;
-
-    // auto cfg = cbdc::threepc::read_config(argc, argv);
-    // if(!cfg.has_value()) {
-    //     log->error("Error parsing options");
-    //     return 1;
-    // }
 
     /// set Log Settings
     log->set_loglevel(cfg->m_loglevel);
