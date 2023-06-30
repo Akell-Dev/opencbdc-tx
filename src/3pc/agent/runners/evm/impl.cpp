@@ -591,11 +591,11 @@ namespace cbdc::threepc::agent::runner {
                          evmc::to_string(result.status_code));
             m_result_callback(error_code::internal_error);
         } else if(m_host->should_retry()) {
-            m_log->trace("Contract was wounded");
+            m_log->error("Contract was wounded");
             m_result_callback(error_code::wounded);
         } else {
             if(result.status_code == EVMC_REVERT) {
-                m_log->trace("Contract reverted");
+                m_log->error("Contract reverted");
                 m_host->revert();
             }
 
@@ -698,7 +698,7 @@ namespace cbdc::threepc::agent::runner {
             broker::lock_type::write,
             [this](const broker::interface::try_lock_return_type& r) {
                 if(!std::holds_alternative<broker::value_type>(r)) {
-                    m_log->debug("Failed to lock key for TX receipt");
+                    m_log->error("Failed to lock key for TX receipt");
                     m_result_callback(error_code::wounded);
                     return;
                 }

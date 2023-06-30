@@ -236,6 +236,10 @@ namespace cbdc::rpc {
 
         if(req.isMember("params")) {
             params = req["params"];
+            // by-position check
+            if ( !params.isArray() ) {
+                return false;
+            }
         }
 
         uint64_t id = 0;
