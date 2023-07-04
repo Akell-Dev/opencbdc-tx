@@ -82,6 +82,9 @@ FROM $IMAGE_VERSION AS threepc
 # Set working directory
 WORKDIR /opt/tx-processor
 
+# Copy 3pc config
+COPY --from=builder /opt/tx-processor/test.cfg ./test.cfg
+
 # Only copy essential binaries
 COPY --from=builder /opt/tx-processor/build/src/3pc/agent/agentd ./build/src/3pc/agent/agentd
 COPY --from=builder /opt/tx-processor/build/src/3pc/runtime_locking_shard/runtime_locking_shardd ./build/src/3pc/runtime_locking_shard/runtime_locking_shardd

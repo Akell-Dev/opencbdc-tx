@@ -16,6 +16,8 @@
 #include "util/common/thread_pool.hpp"
 #include "util/rpc/http/json_rpc_http_server.hpp"
 
+#include "util/resource/resource.hpp"
+
 #include <atomic>
 #include <secp256k1.h>
 #include <thread>

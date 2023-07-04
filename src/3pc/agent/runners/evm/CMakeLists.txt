@@ -16,6 +16,7 @@ add_library(evm_runner address.cpp
                        http_server.cpp)
 
 target_link_libraries(evm_runner threepc
+                                 resource
                                  ${KECCAK_LIBRARY}
                                  ${EVMC_HEX_LIBRARY}
                                  ${EVMONE_LIBRARY}

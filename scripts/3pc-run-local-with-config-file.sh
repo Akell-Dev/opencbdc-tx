@@ -34,4 +34,7 @@ mkdir -p $LOG_FILE_PATH
 sleep 1
 ./scripts/wait-for-it.sh -s $IP:5556 -t 60 -- ./build/src/3pc/ticket_machine/ticket_machined 0 0 $CONF_FILE_PATH $LOG_FILE_PATH/ticket_machined.log &
 sleep 1
-./scripts/wait-for-it.sh -s $IP:7777 -t 60 -- ./scripts/wait-for-it.sh -s $IP:5556 -t 60 -- ./build/src/3pc/agent/agentd 0 0 $CONF_FILE_PATH $LOG_FILE_PATH/agentd.log &
+./scripts/wait-for-it.sh -s $IP:7777 -t 60 -- ./scripts/wait-for-it.sh -s $IP:5556 -t 60 -- ./build/src/3pc/agent/agentd 0 0 $CONF_FILE_PATH $LOG_FILE_PATH/agentd0.log &
+sleep 1
+./scripts/wait-for-it.sh -s $IP:7777 -t 60 -- ./scripts/wait-for-it.sh -s $IP:5556 -t 60 -- ./build/src/3pc/agent/agentd 1 0 $CONF_FILE_PATH $LOG_FILE_PATH/agentd1.log &
+

@@ -340,8 +340,24 @@ namespace cbdc::threepc::agent::rpc {
                 auto process = Json::Value(); 
                 auto res = Json::Value();
 
-                res["cpu_core"] = Json::Value("4");
-                res["cpu_usage_percent"] = Json::Value("0%");
+                auto maybe_cpus = cbdc::get_cpu_usage();
+
+                if(!maybe_cpus.has_value()) {
+                    return false;
+                }
+
+                auto cpus = maybe_cpus.value();
+                for(auto v : cpus ) {
+                    m_log->warn(v.id, std::to_string(v.maybe_user));
+                }
+
+                res["cpu_core"] = cpus.size() - 1;
+                res["cpu_idle"] = cpus[0].maybe_idle;
+
+                auto percent = cpus[0].maybe_user + cpus[0].maybe_nice + cpus[0].maybe_system;
+                percent /= cpus[0].total;
+                res["cpu_usage_percent"] = percent;
+
                 res["virtual_memory"] = Json::Value("1");
                 res["used_memory"] = Json::Value("1");
 
