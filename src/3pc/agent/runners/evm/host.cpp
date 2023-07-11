@@ -689,7 +689,13 @@ namespace cbdc::threepc::agent::runner {
             auto status = res_fut.wait_for(std::chrono::seconds(1));
             if(status == std::future_status::ready) {
                 break;
+            } else if ( status == std::future_status::timeout) {
+                return std::nullopt;
+            } else if ( i == 1000 ) {
+                m_log->error(m_ticket_number, "waits for", key.to_hex(), write, "but wait timeout(1000)");
+                return std::nullopt;
             }
+
             m_log->trace(m_ticket_number,
                          "still waits for",
                          key.to_hex(),
