@@ -63,6 +63,21 @@ make -j$CPUS
 $SUDO make install
 cd ..
 
+echo -e "${green}Boost Library Install${end}"
+$SUDO apt-get install libboost-all-dev -y
+
+[ -d "./redis-cpp" ] && rm -r ./redis-cpp
+
+echo -e "${green}Building Redis Client from sources...${end}"
+git clone https://github.com/tdv/redis-cpp.git
+cd redis-cpp
+mkdir build 
+cd build
+cmake ..
+make 
+$SUDO make install
+cd ..
+
 NURAFT_VERSION="1.3.0"
 echo -e "${green}Building NuRaft from sources...${end}"
 wget https://github.com/eBay/NuRaft/archive/v${NURAFT_VERSION}.tar.gz

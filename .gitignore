@@ -46,6 +46,7 @@ CMakeFiles/
 plots/
 .deps/
 .libs/
+redis*/
 
 # Database
 blocks.dat
@@ -78,3 +79,6 @@ tx_samples_0.txt
 *_raft_log_*/
 
 docker-compose-*.yml
+
+# configure file
+test.cfg
