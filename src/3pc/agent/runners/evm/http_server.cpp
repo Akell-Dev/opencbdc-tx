@@ -1159,8 +1159,7 @@ namespace cbdc::threepc::agent::rpc {
                 auto block = cbdc::threepc::agent::runner::evm_block();
                 block.height = tn256;
 
-                auto block_hash = block_id(block);
-                m_log->warn("0x" + to_string(block_hash));
+                // auto block_hash = block_id(block);
 
                 auto bloom = cbdc::buffer();
                 constexpr auto bits_in_32_bytes = 256;
@@ -1389,6 +1388,7 @@ namespace cbdc::threepc::agent::rpc {
         const Json::Value& /*params*/,
         const server_type::result_callback_type& callback) -> bool {
         auto ret = Json::Value();
+
 #ifdef VENETA_DLT
         ret["result"] = "veneta_dlt/v0.alpha";
 #else
