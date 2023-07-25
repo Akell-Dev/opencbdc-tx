@@ -9,6 +9,8 @@ add_executable(run_benchmarks   low_level.cpp
                                 uhs_set.cpp
                                 )
 
+add_executable(run_benchmarks_3pc 3pc_test.cpp)
+
 target_compile_options(run_benchmarks PRIVATE -ftest-coverage -fprofile-arcs)
 target_link_options(run_benchmarks PRIVATE --coverage)
 target_link_libraries(run_benchmarks ${GTEST_LIBRARY}
@@ -23,4 +25,20 @@ target_link_libraries(run_benchmarks ${GTEST_LIBRARY}
                                      crypto
                                      secp256k1
                                      ${LEVELDB_LIBRARY}
+                                     ${REDIS_CPP_LIBRARY}
                                      ${CMAKE_THREAD_LIBS_INIT})
+
+target_compile_options(run_benchmarks_3pc PRIVATE -ftest-coverage -fprofile-arcs)
+target_link_options(run_benchmarks_3pc PRIVATE --coverage)
+target_link_libraries(run_benchmarks_3pc ${GTEST_LIBRARY}
+                                         ${GTEST_MAIN_LIBRARY}
+                                         benchmark::benchmark
+                                         serialization
+                                         common
+                                         crypto
+                                         secp256k1
+                                         ${JSON_LIBRARY}
+                                         ${CURL_LIBRARY}
+                                         ${LEVELDB_LIBRARY}
+                                         ${REDIS_CPP_LIBRARY}
+                                         ${CMAKE_THREAD_LIBS_INIT})
